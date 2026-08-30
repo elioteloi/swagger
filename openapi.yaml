@@ -1,0 +1,139 @@
+openapi: 3.0.3
+
+info:
+  title: I-Stock API
+  version: 1.0.0
+  description: API for managing industrial inventory.
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /inventory:
+    get:
+      summary: List all inventory
+      responses:
+        "200":
+          description: List of inventory
+
+    post:
+      summary: Create an object in inventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Insert"
+      responses:
+        "201":
+          description: Insert created
+
+  /inventory/{id}:
+    get:
+      summary: Get an object
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Insert found
+        "404":
+          description: Insert not found
+
+    put:
+      summary: Update an inventory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Insert"
+      responses:
+        "200":
+          description: Insert updated
+        "404":
+          description: Insert not found
+
+  /movement:
+    get:
+      summary: List all movements
+      responses:
+        "200":
+          description: List of movements
+
+    post:
+      summary: a movement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Movement"
+      responses:
+        "201":
+          description: Movement registered
+
+    patch:
+      summary: update a movement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Movement"
+      responses:
+        "201":
+          description: Movement updated
+  /user:
+    post:
+      summary: create a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Movement"
+      responses:
+        "201":
+          description: user created
+
+components:
+  schemas:
+    Insert:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+        manufacturer:
+          type: string
+        quantity:
+          type: integer
+        minimumStock:
+          type: integer
+
+    Movement:
+      type: object
+      properties:
+        id:
+          type: integer
+        insertId:
+          type: integer
+        type:
+          type: string
+          enum:
+            - IN
+            - OUT
+        quantity:
+          type: integer
+        user:
+          type: string
